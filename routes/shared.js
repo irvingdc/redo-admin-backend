@@ -28,5 +28,10 @@ module.exports = {
 					resolve(res)
 				})
 		})
+	},
+	stringToBlob : function(str){
+		let array = str.split("")
+		array.forEach((it,index,arr)=>{arr[index]=it.charCodeAt(0)})
+		return array
 	}
 }

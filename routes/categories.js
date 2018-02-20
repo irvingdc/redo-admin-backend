@@ -15,23 +15,26 @@ async function getCategory(req, res){
 	let categories = await fn.query(conn,"SELECT * FROM Category where id=?;", [id])
 	if(categories.length) res.send({ success : true, data : categories[0] })
 	else res.send({ success : false, data : null })
+	conn.end()
 }
 
 async function addCategory(req, res) {
 	let conn = fn.connectToDB()
 	let name = req.body.name
-	let abrev = req.body.abrev
-	let queryResult = await fn.query(conn,"INSERT INTO Category(name,abreviation) VALUES(?,?);", [name,abrev])
+	let abreviation = req.body.abreviation
+	let queryResult = await fn.query(conn,"INSERT INTO Category(name,abreviation) VALUES(?,?);", [name,abreviation])
 	res.send({ success : true, data : queryResult["insertId"] })
+	conn.end()
 }
 
 async function updateCategory(req, res) {
 	let conn = fn.connectToDB()
 	let id = req.params.id
 	let name = req.body.name
-	let abrev = req.body.abrev
-	await fn.query(conn,"UPDATE Category SET name=?, abreviation=? WHERE id=?;", [name, abrev, id])
+	let abreviation = req.body.abreviation
+	await fn.query(conn,"UPDATE Category SET name=?, abreviation=? WHERE id=?;", [name, abreviation, id])
 	res.send({ success : true, data : null })
+	conn.end()
 }
 
 async function deleteCategory(req, res) {
@@ -39,6 +42,7 @@ async function deleteCategory(req, res) {
 	let id = req.params.id
 	await fn.query(conn,"DELETE FROM Category where id=?;", [id])
 	res.send({ success : true, data : null })
+	conn.end()
 }
 
 router.get('/', (req, res) => { 
